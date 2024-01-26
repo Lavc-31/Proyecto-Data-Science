@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Titulo</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+     <!--JQUERY  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  </head>
+  <body>
+    <h1>test text</h1>
+    <br>
+    <div style="width: 60%; margin: 0px auto;">
+      <form name='formulario' method="post" enctype="multipart/form-data">
+        <input type="file" id="img" name="img" accept="image/*" onchange="previewFile()">
+        <br>
+        <img id="image" src="" height="200" alt="Vista previa...">
+        <br>
+        <input type="button" value="Verificar" id="btnsubmit" onclick="submitForm()">
+      </form>
+      <div id="resultado"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+      function submitForm() {
+        var frm = document.getElementsByName('formulario')[0];
+        frm.submit();
+        frm.reset();
+      }
+
+      function previewFile(){
+        var preview = document.querySelector('img');
+        var file    = document.querySelector('input[type=file]').files[0];
+        var reader  = new FileReader();
+
+        reader.onloadend = function () {
+          preview.src = reader.result;
+        }
+
+        if (file) {
+          reader.readAsDataURL(file);
+          console.log(file)
+        }
+        else {
+          preview.src = "";
+        }
+      }
+
+    </script>
+  </body>
+</html>

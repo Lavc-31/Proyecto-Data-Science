@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verificador de Adulto Mayor</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- External Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <div class="text-center">
+            <h1 class="mb-4">Verificador de Adulto Mayor</h1>
+        </div>
+
+        <form name='formulario' method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="img" class="form-label">Determinar si un individuo es adulto mayor, a partir de una foto.</label>
+                <input type="file" id="img" name="img" accept="image/*" class="form-control" onchange="previewFile()">
+            </div>
+            
+            <img id="image" src="" alt="Vista previa" class="img-fluid mx-auto d-block d-none">
+
+            <div class="text-center">
+                <input type="button" value="VERIFICAR FOTO" id="btnsubmit" onclick="submitForm()" class="btn btn-dark">
+            </div>
+        </form>
+
+        <div id="resultado" class="text-center mt-4 p-3" style="border: 1px solid #ccc; border-radius: 5px; background-color: #f7f7f7; font-size: 200%;"></div>
+
+    </div>
+    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        //function submitForm() {
+            //var frm = document.getElementsByName('formulario')[0];
+            //frm.submit();
+            //frm.reset();
+        //}
+
+        function submitForm() {
+            var frm = document.getElementsByName('formulario')[0];
+            var formData = new FormData(frm);
+
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Display the result in the 'resultado' div
+                    document.getElementById('resultado').innerHTML = 'Rango estario estimado es: ' + response.resultado;
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                }
+            });
+
+            frm.reset();
+        }
+
+        function previewFile() {
+            var preview = document.querySelector('#image');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.classList.remove('d-none');
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+                preview.classList.add('d-none');
+            }
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2023 Los Cabros de Data Science. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>
